@@ -1,101 +1,88 @@
 import ApexCharts from "apexcharts";
 
-// ===== chartThree
+// ===== chartThree - Operational Trends Line Chart
 const chart03 = () => {
   const chartThreeOptions = {
     series: [
       {
-        name: "Sales",
-        data: [180, 190, 170, 160, 175, 165, 170, 205, 230, 210, 240, 235],
+        name: "SLA",
+        data: [88, 89, 85, 90],
       },
       {
-        name: "Revenue",
-        data: [40, 30, 50, 40, 55, 40, 70, 100, 110, 120, 150, 140],
+        name: "Adherence",
+        data: [93, 94, 91, 95],
       },
     ],
-    legend: {
-      show: false,
-      position: "top",
-      horizontalAlign: "left",
-    },
-    colors: ["#465FFF", "#9CB9FF"],
+    colors: ["#3B82F6", "#9333EA"],
     chart: {
       fontFamily: "Outfit, sans-serif",
-      height: 310,
-      type: "area",
+      type: "line",
+      height: 350,
       toolbar: {
         show: false,
       },
     },
-    fill: {
-      gradient: {
-        enabled: true,
-        opacityFrom: 0.55,
-        opacityTo: 0,
-      },
-    },
     stroke: {
-      curve: "straight",
-      width: ["2", "2"],
+      curve: "smooth",
+      width: [3, 3],
+      dashArray: [0, 5],
     },
-
-    markers: {
-      size: 0,
-    },
-    labels: {
-      show: false,
+    legend: {
+      show: true,
       position: "top",
-    },
-    grid: {
-      xaxis: {
-        lines: {
-          show: false,
-        },
-      },
-      yaxis: {
-        lines: {
-          show: true,
-        },
-      },
-    },
-    dataLabels: {
-      enabled: false,
-    },
-    tooltip: {
-      x: {
-        format: "dd MMM yyyy",
+      horizontalAlign: "right",
+      fontFamily: "Outfit",
+      fontSize: "14px",
+      fontWeight: 500,
+      labels: {
+        colors: "#6B7280",
       },
     },
     xaxis: {
-      type: "category",
-      categories: [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-      ],
+      categories: ["Week 1", "Week 2", "Week 3", "Week 4"],
       axisBorder: {
         show: false,
       },
       axisTicks: {
         show: false,
       },
-      tooltip: false,
-    },
-    yaxis: {
-      title: {
+      labels: {
         style: {
-          fontSize: "0px",
+          colors: "#6B7280",
         },
       },
+    },
+    yaxis: {
+      min: 0,
+      max: 100,
+      labels: {
+        formatter: function (val) {
+          return val + "%";
+        },
+        style: {
+          colors: "#6B7280",
+        },
+      },
+    },
+    grid: {
+      borderColor: "#E5E7EB",
+      yaxis: {
+        lines: {
+          show: true,
+        },
+      },
+    },
+    tooltip: {
+      shared: true,
+      intersect: false,
+      y: {
+        formatter: function (val) {
+          return val + "%";
+        },
+      },
+    },
+    dataLabels: {
+      enabled: false,
     },
   };
 

@@ -1,54 +1,61 @@
 import ApexCharts from "apexcharts";
 
-// ===== chartTwo
+// ===== chartTwo - Portfolio Health Donut Chart
 const chart02 = () => {
   const chartTwoOptions = {
-    series: [75.55],
-    colors: ["#465FFF"],
+    series: [73, 13, 14], // Healthy, At Risk, Critical
+    colors: ["#10B981", "#F59E0B", "#EF4444"],
     chart: {
       fontFamily: "Outfit, sans-serif",
-      type: "radialBar",
+      type: "donut",
       height: 330,
-      sparkline: {
-        enabled: true,
+      toolbar: {
+        show: false,
+      },
+    },
+    labels: ["Healthy", "At Risk", "Critical"],
+    legend: {
+      show: true,
+      position: "bottom",
+      horizontalAlign: "center",
+      fontFamily: "Outfit",
+      fontSize: "14px",
+      fontWeight: 500,
+      markers: {
+        width: 12,
+        height: 12,
+        radius: 6,
       },
     },
     plotOptions: {
-      radialBar: {
-        startAngle: -90,
-        endAngle: 90,
-        hollow: {
-          size: "80%",
-        },
-        track: {
-          background: "#E4E7EC",
-          strokeWidth: "100%",
-          margin: 5, // margin is in pixels
-        },
-        dataLabels: {
-          name: {
-            show: false,
-          },
-          value: {
-            fontSize: "36px",
-            fontWeight: "600",
-            offsetY: 60,
-            color: "#1D2939",
-            formatter: function (val) {
-              return val + "%";
+      pie: {
+        donut: {
+          size: "70%",
+          labels: {
+            show: true,
+            name: {
+              show: false,
+            },
+            value: {
+              show: false,
+            },
+            total: {
+              show: false,
             },
           },
         },
       },
     },
-    fill: {
-      type: "solid",
-      colors: ["#465FFF"],
+    dataLabels: {
+      enabled: false,
     },
-    stroke: {
-      lineCap: "round",
+    tooltip: {
+      y: {
+        formatter: function (val) {
+          return val + "%";
+        },
+      },
     },
-    labels: ["Progress"],
   };
 
   const chartSelector = document.querySelectorAll("#chartTwo");

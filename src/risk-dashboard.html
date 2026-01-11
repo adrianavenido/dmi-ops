@@ -8,11 +8,11 @@
     />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>
-      HRIS Dashboard | TailAdmin - Tailwind CSS Admin Dashboard Template
+      Risk & Governance Dashboard | TailAdmin - Tailwind CSS Admin Dashboard Template
     </title>
   </head>
   <body
-    x-data="{ page: 'ecommerce', 'loaded': true, 'darkMode': false, 'stickyMenu': false, 'sidebarToggle': false, 'scrollTop': false }"
+    x-data="{ page: 'riskDashboard', 'loaded': true, 'darkMode': false, 'stickyMenu': false, 'sidebarToggle': false, 'scrollTop': false }"
     x-init="
          darkMode = JSON.parse(localStorage.getItem('darkMode'));
          $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))"
@@ -43,30 +43,27 @@
         <!-- ===== Main Content Start ===== -->
         <main>
           <div class="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6">
-            <div class="grid grid-cols-12 gap-4 md:gap-6">
-              <!-- KPI Cards - Full Width -->
-              <div class="col-span-12">
-                <include src="./partials/metric-group/metric-group-01.html" />
+            <!-- Breadcrumb Start -->
+            <div x-data="{ pageName: `Risk & Governance Dashboard`}">
+              <include src="./partials/breadcrumb.html" />
+            </div>
+            <!-- Breadcrumb End -->
+
+            <div class="space-y-5 sm:space-y-6">
+              <!-- Header with Reporting Period -->
+              <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <h2 class="text-xl font-semibold text-gray-800 dark:text-white/90">Risk Management System</h2>
+                  <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Agency-wide Risk Register, Metrics & Monitoring</p>
+                </div>
+                <div class="text-sm text-gray-600 dark:text-gray-400">
+                  <span class="font-medium">Reporting Period:</span> Q4 2025
+                </div>
               </div>
 
-              <!-- Monthly Performance Bar Chart -->
-              <div class="col-span-12">
-                <!-- ====== Chart One - Monthly Performance Start -->
-                <include src="./partials/chart/chart-01.html" />
-                <!-- ====== Chart One - Monthly Performance End -->
-              </div>
-
-              <!-- Operational Trends -->
-              <div class="col-span-12">
-                <!-- ====== Chart Three - Operational Trends Start -->
-                <include src="./partials/chart/chart-03.html" />
-                <!-- ====== Chart Three - Operational Trends End -->
-              </div>
-
-              <div class="col-span-12">
-                <!-- ====== Risk Watchlist Table Start -->
-                <include src="./partials/table/table-01.html" />
-                <!-- ====== Risk Watchlist Table End -->
+              <!-- Risk Dashboard Tabs -->
+              <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] sm:p-6">
+                <include src="./partials/risk-dashboard/risk-tabs.html" />
               </div>
             </div>
           </div>
@@ -78,3 +75,4 @@
     <!-- ===== Page Wrapper End ===== -->
   </body>
 </html>
+

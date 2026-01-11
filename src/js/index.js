@@ -7,13 +7,19 @@ import Alpine from "alpinejs";
 import persist from "@alpinejs/persist";
 import flatpickr from "flatpickr";
 import Dropzone from "dropzone";
+import ApexCharts from "apexcharts";
 
 import chart01 from "./components/charts/chart-01";
 import chart02 from "./components/charts/chart-02";
 import chart03 from "./components/charts/chart-03";
 import map01 from "./components/map-01";
+import initRiskDashboardCharts from "./components/charts/risk-dashboard-charts";
 import "./components/calendar-init.js";
 import "./components/image-resize";
+import "./router";
+
+// Make ApexCharts available globally for Alpine.js components
+window.ApexCharts = ApexCharts;
 
 Alpine.plugin(persist);
 window.Alpine = Alpine;
@@ -49,12 +55,24 @@ if (dropzoneArea.length) {
   let myDropzone = new Dropzone("#demo-upload", { url: "/file/post" });
 }
 
+// Expose chart functions globally for router reinitialization
+window.chart01 = chart01;
+window.chart02 = chart02;
+window.chart03 = chart03;
+window.map01 = map01;
+window.initRiskDashboardCharts = initRiskDashboardCharts;
+
 // Document Loaded
 document.addEventListener("DOMContentLoaded", () => {
   chart01();
   chart02();
   chart03();
   map01();
+  
+  // Initialize risk dashboard charts if on that page
+  if (document.querySelector("#riskLevelChart")) {
+    initRiskDashboardCharts();
+  }
 });
 
 // Get the current year

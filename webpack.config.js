@@ -19,7 +19,7 @@ const processNestedHtml = (content, loaderContext, dir = null) =>
         );
       });
 
-// HTML generation
+// HTML generation - Updated to include new Operations, HR & People Management, Talent Acquisition, and Risk & Governance pages
 const paths = [];
 const generateHTMLPlugins = () =>
   glob.sync("./src/*.html").map((dir) => {
@@ -45,7 +45,7 @@ module.exports = {
       directory: path.join(__dirname, "./build"),
     },
     compress: true,
-    port: 3000,
+    port: 3001,
     hot: true,
   },
   module: {

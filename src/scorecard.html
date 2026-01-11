@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>
+      Scorecard | TailAdmin - Tailwind CSS Admin Dashboard Template
+    </title>
+  </head>
+  <body
+    x-data="{ page: 'scorecard', 'loaded': true, 'darkMode': false, 'stickyMenu': false, 'sidebarToggle': false, 'scrollTop': false }"
+    x-init="
+         darkMode = JSON.parse(localStorage.getItem('darkMode'));
+         $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))"
+    :class="{'dark bg-gray-900': darkMode === true}"
+  >
+    <!-- ===== Preloader Start ===== -->
+    <include src="./partials/preloader.html"></include>
+    <!-- ===== Preloader End ===== -->
+
+    <!-- ===== Page Wrapper Start ===== -->
+    <div class="flex h-screen overflow-hidden">
+      <!-- ===== Sidebar Start ===== -->
+      <include src="./partials/sidebar.html"></include>
+      <!-- ===== Sidebar End ===== -->
+
+      <!-- ===== Content Area Start ===== -->
+      <div
+        class="relative flex flex-col flex-1 overflow-x-hidden overflow-y-auto"
+      >
+        <!-- Small Device Overlay Start -->
+        <include src="./partials/overlay.html" />
+        <!-- Small Device Overlay End -->
+
+        <!-- ===== Header Start ===== -->
+        <include src="./partials/header.html" />
+        <!-- ===== Header End ===== -->
+
+        <!-- ===== Main Content Start ===== -->
+        <main>
+          <div class="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6">
+            <!-- Breadcrumb Start -->
+            <div x-data="{ pageName: `Scorecard`}">
+              <include src="./partials/breadcrumb.html" />
+            </div>
+            <!-- Breadcrumb End -->
+
+            <div class="space-y-5 sm:space-y-6">
+              <!-- Performance Summary Table -->
+              <include src="./partials/table/scorecard-table.html" />
+
+              <!-- Campaign Details and Insights -->
+              <div class="grid grid-cols-1 gap-5 lg:grid-cols-2">
+                <!-- Campaign Details -->
+                <div
+                  class="rounded-2xl border border-gray-200 bg-white px-5 py-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6 sm:py-5"
+                >
+                  <h3
+                    class="mb-4 text-base font-medium text-gray-800 dark:text-white/90"
+                  >
+                    Campaign Details
+                  </h3>
+                  <div class="space-y-3">
+                    <div>
+                      <p class="text-sm text-gray-500 dark:text-gray-400">
+                        Active Campaign
+                      </p>
+                      <p class="mt-1 text-base font-medium text-gray-800 dark:text-white/90">
+                        Fintech Core Support
+                      </p>
+                    </div>
+                    <div>
+                      <p class="text-sm text-gray-500 dark:text-gray-400">
+                        Market
+                      </p>
+                      <p class="mt-1 text-base font-medium text-gray-800 dark:text-white/90">
+                        US/UK
+                      </p>
+                    </div>
+                    <div>
+                      <p class="text-sm text-gray-500 dark:text-gray-400">
+                        FTE Count
+                      </p>
+                      <p class="mt-1 text-base font-medium text-gray-800 dark:text-white/90">
+                        240
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Grid Insights -->
+                <div
+                  class="rounded-2xl border border-gray-200 bg-white px-5 py-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6 sm:py-5"
+                >
+                  <h3
+                    class="mb-4 text-base font-medium text-gray-800 dark:text-white/90"
+                  >
+                    Grid Insights
+                  </h3>
+                  <div class="space-y-3">
+                    <p class="text-sm leading-relaxed text-gray-600 dark:text-gray-400">
+                      Performance dip in March 2024 correlated with system outage and higher AHT. Service levels recovered to target (80%) by early October. Quality Assurance metrics remained consistently strong throughout the period, while First Call Resolution showed improvement trends in recent months.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+        <!-- ===== Main Content End ===== -->
+      </div>
+      <!-- ===== Content Area End ===== -->
+    </div>
+    <!-- ===== Page Wrapper End ===== -->
+  </body>
+</html>
+

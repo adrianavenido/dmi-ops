@@ -1,0 +1,757 @@
+<div
+  x-data="{
+    selectedCampaign: 'Fintech Core Support',
+    selectedYear: '2024',
+    selectedStatus: 'all',
+    selectedMetric: 'all',
+    searchQuery: '',
+    campaigns: ['Fintech Core Support', 'Healthcare Plus', 'RetailMax Corp', 'SaaS Solutions'],
+    years: ['2024', '2023', '2022'],
+    statusFilters: [
+      { value: 'all', label: 'All Status' },
+      { value: 'excellent', label: 'Excellent' },
+      { value: 'good', label: 'Good' },
+      { value: 'warning', label: 'Warning' },
+      { value: 'poor', label: 'Poor' },
+      { value: 'neutral', label: 'Neutral' },
+    ],
+    metricFilters: [
+      { value: 'all', label: 'All Metrics' },
+      { value: 'Total Volume', label: 'Total Volume' },
+      { value: 'Handled Volume', label: 'Handled Volume' },
+      { value: 'AHT', label: 'Average Handle Time' },
+      { value: 'Service Level', label: 'Service Level' },
+      { value: 'QA', label: 'Quality Assurance' },
+      { value: 'FCR', label: 'First Call Resolution' },
+      { value: 'CSAT', label: 'Customer Satisfaction' },
+    ],
+    currentPage: 1,
+    itemsPerPage: 9,
+    campaignData: {
+      'Fintech Core Support': [
+        {
+          name: 'Total Volume (Calls/Chats)',
+          months: [
+            { value: 1245, status: 'poor' },
+            { value: 1102, status: 'poor' },
+            { value: 980, status: 'poor' },
+            { value: 1540, status: 'warning' },
+            { value: 1420, status: 'warning' },
+            { value: 1150, status: 'poor' },
+            { value: 1200, status: 'poor' },
+            { value: 1680, status: 'warning' },
+            { value: 1350, status: 'warning' },
+          ],
+        },
+        {
+          name: 'Service Level (SL 80/20)',
+          months: [
+            { value: 82, status: 'good', suffix: '%' },
+            { value: 84, status: 'good', suffix: '%' },
+            { value: 98, status: 'excellent', suffix: '%' },
+            { value: 65, status: 'warning', suffix: '%' },
+            { value: 72, status: 'warning', suffix: '%' },
+            { value: 88, status: 'good', suffix: '%' },
+            { value: 85, status: 'good', suffix: '%' },
+            { value: 58, status: 'warning', suffix: '%' },
+            { value: 75, status: 'warning', suffix: '%' },
+          ],
+        },
+        {
+          name: 'Quality Assurance (QA)',
+          months: [
+            { value: 94, status: 'excellent', suffix: '%' },
+            { value: 95, status: 'excellent', suffix: '%' },
+            { value: 96, status: 'excellent', suffix: '%' },
+            { value: 88, status: 'good', suffix: '%' },
+            { value: 91, status: 'good', suffix: '%' },
+            { value: 93, status: 'excellent', suffix: '%' },
+            { value: 94, status: 'excellent', suffix: '%' },
+            { value: 85, status: 'good', suffix: '%' },
+            { value: 90, status: 'good', suffix: '%' },
+          ],
+        },
+        {
+          name: 'First Call Resolution (FCR)',
+          months: [
+            { value: 76, status: 'poor', suffix: '%' },
+            { value: 78, status: 'poor', suffix: '%' },
+            { value: 82, status: 'good', suffix: '%' },
+            { value: 68, status: 'warning', suffix: '%' },
+            { value: 70, status: 'warning', suffix: '%' },
+            { value: 75, status: 'poor', suffix: '%' },
+            { value: 77, status: 'poor', suffix: '%' },
+            { value: 61, status: 'warning', suffix: '%' },
+            { value: 73, status: 'poor', suffix: '%' },
+          ],
+        },
+        {
+          name: 'Customer Sat (CSAT)',
+          months: [
+            { value: 4.2, status: 'neutral' },
+            { value: 4.3, status: 'neutral' },
+            { value: 4.8, status: 'neutral' },
+            { value: 3.5, status: 'warning' },
+            { value: 3.8, status: 'warning' },
+            { value: 4.4, status: 'neutral' },
+            { value: 4.2, status: 'neutral' },
+            { value: 3.2, status: 'warning' },
+            { value: 4.0, status: 'neutral' },
+          ],
+        },
+      ],
+      'Healthcare Plus': [
+        {
+          name: 'Handled Volume',
+          months: [
+            { value: 2150, status: 'good' },
+            { value: 2080, status: 'good' },
+            { value: 1950, status: 'good' },
+            { value: 2280, status: 'excellent' },
+            { value: 2200, status: 'excellent' },
+            { value: 2100, status: 'good' },
+            { value: 2180, status: 'good' },
+            { value: 2320, status: 'excellent' },
+            { value: 2250, status: 'excellent' },
+          ],
+        },
+        {
+          name: 'Average Handle Time (AHT)',
+          months: [
+            { value: 485, status: 'warning', suffix: 's' },
+            { value: 472, status: 'warning', suffix: 's' },
+            { value: 455, status: 'neutral', suffix: 's' },
+            { value: 520, status: 'poor', suffix: 's' },
+            { value: 510, status: 'poor', suffix: 's' },
+            { value: 490, status: 'warning', suffix: 's' },
+            { value: 478, status: 'warning', suffix: 's' },
+            { value: 535, status: 'poor', suffix: 's' },
+            { value: 495, status: 'warning', suffix: 's' },
+          ],
+        },
+        {
+          name: 'Service Level (SL 80/20)',
+          months: [
+            { value: 91, status: 'excellent', suffix: '%' },
+            { value: 89, status: 'excellent', suffix: '%' },
+            { value: 95, status: 'excellent', suffix: '%' },
+            { value: 78, status: 'warning', suffix: '%' },
+            { value: 81, status: 'good', suffix: '%' },
+            { value: 92, status: 'excellent', suffix: '%' },
+            { value: 88, status: 'good', suffix: '%' },
+            { value: 72, status: 'warning', suffix: '%' },
+            { value: 85, status: 'good', suffix: '%' },
+          ],
+        },
+        {
+          name: 'Quality Assurance (QA)',
+          months: [
+            { value: 97, status: 'excellent', suffix: '%' },
+            { value: 96, status: 'excellent', suffix: '%' },
+            { value: 98, status: 'excellent', suffix: '%' },
+            { value: 94, status: 'excellent', suffix: '%' },
+            { value: 95, status: 'excellent', suffix: '%' },
+            { value: 97, status: 'excellent', suffix: '%' },
+            { value: 96, status: 'excellent', suffix: '%' },
+            { value: 93, status: 'excellent', suffix: '%' },
+            { value: 95, status: 'excellent', suffix: '%' },
+          ],
+        },
+      ],
+      'RetailMax Corp': [
+        {
+          name: 'Total Volume (Calls/Chats)',
+          months: [
+            { value: 3420, status: 'excellent' },
+            { value: 3280, status: 'excellent' },
+            { value: 3150, status: 'good' },
+            { value: 3650, status: 'excellent' },
+            { value: 3520, status: 'excellent' },
+            { value: 3380, status: 'excellent' },
+            { value: 3450, status: 'excellent' },
+            { value: 3720, status: 'excellent' },
+            { value: 3600, status: 'excellent' },
+          ],
+        },
+        {
+          name: 'Handled Volume',
+          months: [
+            { value: 3180, status: 'good' },
+            { value: 3050, status: 'good' },
+            { value: 2920, status: 'good' },
+            { value: 3420, status: 'excellent' },
+            { value: 3300, status: 'excellent' },
+            { value: 3150, status: 'good' },
+            { value: 3220, status: 'good' },
+            { value: 3480, status: 'excellent' },
+            { value: 3350, status: 'excellent' },
+          ],
+        },
+        {
+          name: 'First Call Resolution (FCR)',
+          months: [
+            { value: 88, status: 'excellent', suffix: '%' },
+            { value: 86, status: 'good', suffix: '%' },
+            { value: 90, status: 'excellent', suffix: '%' },
+            { value: 82, status: 'good', suffix: '%' },
+            { value: 84, status: 'good', suffix: '%' },
+            { value: 87, status: 'excellent', suffix: '%' },
+            { value: 89, status: 'excellent', suffix: '%' },
+            { value: 81, status: 'good', suffix: '%' },
+            { value: 85, status: 'good', suffix: '%' },
+          ],
+        },
+        {
+          name: 'Customer Sat (CSAT)',
+          months: [
+            { value: 4.6, status: 'neutral' },
+            { value: 4.5, status: 'neutral' },
+            { value: 4.7, status: 'neutral' },
+            { value: 4.4, status: 'neutral' },
+            { value: 4.5, status: 'neutral' },
+            { value: 4.6, status: 'neutral' },
+            { value: 4.7, status: 'neutral' },
+            { value: 4.3, status: 'neutral' },
+            { value: 4.5, status: 'neutral' },
+          ],
+        },
+      ],
+      'SaaS Solutions': [
+        {
+          name: 'Total Volume (Calls/Chats)',
+          months: [
+            { value: 890, status: 'poor' },
+            { value: 820, status: 'poor' },
+            { value: 750, status: 'poor' },
+            { value: 1050, status: 'warning' },
+            { value: 980, status: 'poor' },
+            { value: 860, status: 'poor' },
+            { value: 920, status: 'poor' },
+            { value: 1120, status: 'warning' },
+            { value: 950, status: 'poor' },
+          ],
+        },
+        {
+          name: 'Average Handle Time (AHT)',
+          months: [
+            { value: 245, status: 'neutral', suffix: 's' },
+            { value: 238, status: 'neutral', suffix: 's' },
+            { value: 225, status: 'neutral', suffix: 's' },
+            { value: 285, status: 'warning', suffix: 's' },
+            { value: 270, status: 'warning', suffix: 's' },
+            { value: 250, status: 'neutral', suffix: 's' },
+            { value: 255, status: 'neutral', suffix: 's' },
+            { value: 295, status: 'warning', suffix: 's' },
+            { value: 260, status: 'neutral', suffix: 's' },
+          ],
+        },
+        {
+          name: 'Service Level (SL 80/20)',
+          months: [
+            { value: 75, status: 'warning', suffix: '%' },
+            { value: 78, status: 'warning', suffix: '%' },
+            { value: 82, status: 'good', suffix: '%' },
+            { value: 68, status: 'warning', suffix: '%' },
+            { value: 71, status: 'warning', suffix: '%' },
+            { value: 79, status: 'warning', suffix: '%' },
+            { value: 81, status: 'good', suffix: '%' },
+            { value: 65, status: 'warning', suffix: '%' },
+            { value: 73, status: 'warning', suffix: '%' },
+          ],
+        },
+        {
+          name: 'Quality Assurance (QA)',
+          months: [
+            { value: 87, status: 'good', suffix: '%' },
+            { value: 89, status: 'good', suffix: '%' },
+            { value: 91, status: 'good', suffix: '%' },
+            { value: 84, status: 'good', suffix: '%' },
+            { value: 86, status: 'good', suffix: '%' },
+            { value: 88, status: 'good', suffix: '%' },
+            { value: 90, status: 'good', suffix: '%' },
+            { value: 83, status: 'good', suffix: '%' },
+            { value: 85, status: 'good', suffix: '%' },
+          ],
+        },
+        {
+          name: 'First Call Resolution (FCR)',
+          months: [
+            { value: 72, status: 'poor', suffix: '%' },
+            { value: 74, status: 'poor', suffix: '%' },
+            { value: 78, status: 'poor', suffix: '%' },
+            { value: 68, status: 'warning', suffix: '%' },
+            { value: 70, status: 'warning', suffix: '%' },
+            { value: 73, status: 'poor', suffix: '%' },
+            { value: 75, status: 'poor', suffix: '%' },
+            { value: 66, status: 'warning', suffix: '%' },
+            { value: 71, status: 'poor', suffix: '%' },
+          ],
+        },
+      ],
+    },
+    get metrics() {
+      return this.campaignData[this.selectedCampaign] || [];
+    },
+    months: ['Oct 2024', 'Sep 2024', 'Aug 2024', 'Jul 2024', 'Jun 2024', 'May 2024', 'Apr 2024', 'Mar 2024', 'Feb 2024'],
+    getStatusClass(status) {
+      const classes = {
+        excellent: 'bg-green-50 text-green-700 dark:bg-green-500/15 dark:text-green-400',
+        good: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-400',
+        warning: 'bg-orange-50 text-orange-700 dark:bg-orange-500/15 dark:text-orange-400',
+        poor: 'bg-red-50 text-red-700 dark:bg-red-500/15 dark:text-red-400',
+        neutral: 'bg-white text-gray-800 dark:bg-white/[0.03] dark:text-white/90',
+      };
+      return classes[status] || classes.neutral;
+    },
+    getTotalPages() {
+      return Math.ceil(this.months.length / this.itemsPerPage);
+    },
+    getDisplayedMonths() {
+      const start = (this.currentPage - 1) * this.itemsPerPage;
+      const end = start + this.itemsPerPage;
+      return this.months.slice(start, end);
+    },
+    getDisplayedMetrics() {
+      let filtered = this.metrics;
+      
+      // Filter by metric type
+      if (this.selectedMetric !== 'all') {
+        filtered = filtered.filter(metric => 
+          metric.name.toLowerCase().includes(this.selectedMetric.toLowerCase())
+        );
+      }
+      
+      // Filter by search query
+      if (this.searchQuery) {
+        filtered = filtered.filter(metric =>
+          metric.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+        );
+      }
+      
+      // Filter by status
+      if (this.selectedStatus !== 'all') {
+        filtered = filtered.map(metric => {
+          const filteredMonths = metric.months.filter(month => 
+            month.status === this.selectedStatus
+          );
+          return {
+            ...metric,
+            months: filteredMonths.length > 0 ? filteredMonths : metric.months,
+          };
+        });
+      }
+      
+      const start = (this.currentPage - 1) * this.itemsPerPage;
+      return filtered.map(metric => ({
+        ...metric,
+        months: metric.months.slice(start, start + this.itemsPerPage),
+      }));
+    },
+    getFilteredMetricsCount() {
+      let filtered = this.metrics;
+      if (this.selectedMetric !== 'all') {
+        filtered = filtered.filter(metric => 
+          metric.name.toLowerCase().includes(this.selectedMetric.toLowerCase())
+        );
+      }
+      if (this.searchQuery) {
+        filtered = filtered.filter(metric =>
+          metric.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+        );
+      }
+      return filtered.length;
+    },
+    getActiveFiltersCount() {
+      let count = 0;
+      if (this.selectedCampaign !== 'Fintech Core Support') count++;
+      if (this.selectedYear !== '2024') count++;
+      if (this.selectedStatus !== 'all') count++;
+      if (this.selectedMetric !== 'all') count++;
+      if (this.searchQuery) count++;
+      return count;
+    },
+    resetFilters() {
+      this.selectedCampaign = 'Fintech Core Support';
+      this.selectedYear = '2024';
+      this.selectedStatus = 'all';
+      this.selectedMetric = 'all';
+      this.searchQuery = '';
+      this.currentPage = 1;
+    },
+  }"
+  class="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6"
+>
+  <!-- Header with Filters -->
+  <div class="flex flex-col gap-4 mb-6">
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div>
+        <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">
+          Acquisition & Performance Summary
+        </h3>
+        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+          <span x-text="getFilteredMetricsCount()"></span> metrics displayed
+        </p>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <!-- Reset Filters Button -->
+        <button
+          @click="resetFilters()"
+          x-show="getActiveFiltersCount() > 0"
+          class="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-3 py-2 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"
+        >
+          <svg
+            class="stroke-current"
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M12 4L4 12M4 4L12 12"
+              stroke=""
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          Reset
+        </button>
+      <!-- Campaign Dropdown -->
+      <div x-data="{ open: false }" class="relative">
+        <button
+          @click="open = !open"
+          class="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"
+        >
+          <span x-text="selectedCampaign"></span>
+          <svg
+            class="stroke-current"
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M4 6L8 10L12 6"
+              stroke=""
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+        <div
+          x-show="open"
+          @click.outside="open = false"
+          class="absolute right-0 z-10 w-56 mt-2 origin-top-right bg-white rounded-lg shadow-lg dark:bg-gray-800 ring-1 ring-black ring-opacity-5"
+        >
+          <div class="py-1">
+            <template x-for="campaign in campaigns" :key="campaign">
+              <a
+                @click="selectedCampaign = campaign; currentPage = 1; open = false"
+                :class="selectedCampaign === campaign ? 'bg-gray-100 dark:bg-gray-700' : ''"
+                class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                x-text="campaign"
+              ></a>
+            </template>
+          </div>
+        </div>
+      </div>
+
+      <!-- Year Dropdown -->
+      <div x-data="{ open: false }" class="relative">
+        <button
+          @click="open = !open"
+          class="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"
+        >
+          <span x-text="selectedYear"></span>
+          <svg
+            class="stroke-current"
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M4 6L8 10L12 6"
+              stroke=""
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+        <div
+          x-show="open"
+          @click.outside="open = false"
+          class="absolute right-0 z-10 w-32 mt-2 origin-top-right bg-white rounded-lg shadow-lg dark:bg-gray-800 ring-1 ring-black ring-opacity-5"
+        >
+          <div class="py-1">
+            <template x-for="year in years" :key="year">
+              <a
+                @click="selectedYear = year; currentPage = 1; open = false"
+                :class="selectedYear === year ? 'bg-gray-100 dark:bg-gray-700' : ''"
+                class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                x-text="year"
+              ></a>
+            </template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- Additional Filters Row -->
+    <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
+      <!-- Search Input -->
+      <div class="flex-1 relative">
+        <input
+          type="text"
+          x-model="searchQuery"
+          @input="currentPage = 1"
+          placeholder="Search metrics..."
+          class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 pl-10 text-theme-sm font-medium text-gray-700 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:placeholder:text-gray-500 dark:focus:border-brand-500"
+        />
+        <svg
+          class="absolute left-3 top-1/2 -translate-y-1/2 stroke-current text-gray-400"
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M9.16667 15.8333C12.8486 15.8333 15.8333 12.8486 15.8333 9.16667C15.8333 5.48477 12.8486 2.5 9.16667 2.5C5.48477 2.5 2.5 5.48477 2.5 9.16667C2.5 12.8486 5.48477 15.8333 9.16667 15.8333Z"
+            stroke=""
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M17.5 17.5L13.875 13.875"
+            stroke=""
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </div>
+
+      <!-- Status Filter -->
+      <div x-data="{ open: false }" class="relative">
+        <button
+          @click="open = !open"
+          class="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"
+        >
+          <span x-text="statusFilters.find(s => s.value === selectedStatus)?.label || 'All Status'"></span>
+          <svg
+            class="stroke-current"
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M4 6L8 10L12 6"
+              stroke=""
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+        <div
+          x-show="open"
+          @click.outside="open = false"
+          class="absolute right-0 z-10 w-40 mt-2 origin-top-right bg-white rounded-lg shadow-lg dark:bg-gray-800 ring-1 ring-black ring-opacity-5"
+        >
+          <div class="py-1">
+            <template x-for="status in statusFilters" :key="status.value">
+              <a
+                @click="selectedStatus = status.value; currentPage = 1; open = false"
+                :class="selectedStatus === status.value ? 'bg-gray-100 dark:bg-gray-700' : ''"
+                class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                x-text="status.label"
+              ></a>
+            </template>
+          </div>
+        </div>
+      </div>
+
+      <!-- Metric Type Filter -->
+      <div x-data="{ open: false }" class="relative">
+        <button
+          @click="open = !open"
+          class="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"
+        >
+          <span x-text="metricFilters.find(m => m.value === selectedMetric)?.label || 'All Metrics'"></span>
+          <svg
+            class="stroke-current"
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M4 6L8 10L12 6"
+              stroke=""
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+        <div
+          x-show="open"
+          @click.outside="open = false"
+          class="absolute right-0 z-10 w-56 mt-2 origin-top-right bg-white rounded-lg shadow-lg dark:bg-gray-800 ring-1 ring-black ring-opacity-5 max-h-64 overflow-y-auto"
+        >
+          <div class="py-1">
+            <template x-for="metric in metricFilters" :key="metric.value">
+              <a
+                @click="selectedMetric = metric.value; currentPage = 1; open = false"
+                :class="selectedMetric === metric.value ? 'bg-gray-100 dark:bg-gray-700' : ''"
+                class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                x-text="metric.label"
+              ></a>
+            </template>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Filters Badges -->
+    <div x-show="getActiveFiltersCount() > 0" class="flex flex-wrap items-center gap-2">
+      <span class="text-sm text-gray-500 dark:text-gray-400">Active filters:</span>
+      <template x-if="selectedCampaign !== 'Fintech Core Support'">
+        <span class="inline-flex items-center gap-1 rounded-full bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700 dark:bg-brand-500/15 dark:text-brand-400">
+          Campaign: <span x-text="selectedCampaign"></span>
+        </span>
+      </template>
+      <template x-if="selectedYear !== '2024'">
+        <span class="inline-flex items-center gap-1 rounded-full bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700 dark:bg-brand-500/15 dark:text-brand-400">
+          Year: <span x-text="selectedYear"></span>
+        </span>
+      </template>
+      <template x-if="selectedStatus !== 'all'">
+        <span class="inline-flex items-center gap-1 rounded-full bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700 dark:bg-brand-500/15 dark:text-brand-400">
+          Status: <span x-text="statusFilters.find(s => s.value === selectedStatus)?.label"></span>
+        </span>
+      </template>
+      <template x-if="selectedMetric !== 'all'">
+        <span class="inline-flex items-center gap-1 rounded-full bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700 dark:bg-brand-500/15 dark:text-brand-400">
+          Metric: <span x-text="metricFilters.find(m => m.value === selectedMetric)?.label"></span>
+        </span>
+      </template>
+      <template x-if="searchQuery">
+        <span class="inline-flex items-center gap-1 rounded-full bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700 dark:bg-brand-500/15 dark:text-brand-400">
+          Search: "<span x-text="searchQuery"></span>"
+        </span>
+      </template>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="w-full overflow-x-auto">
+    <table class="min-w-full">
+      <thead>
+        <tr class="border-b border-gray-100 dark:border-gray-800">
+          <th class="px-5 py-3 sm:px-6 text-left">
+            <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
+              Metric
+            </p>
+          </th>
+          <template x-for="month in getDisplayedMonths()" :key="month">
+            <th class="px-5 py-3 sm:px-6 text-center">
+              <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400" x-text="month"></p>
+            </th>
+          </template>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
+        <template x-for="metric in getDisplayedMetrics()" :key="metric.name">
+          <tr>
+            <td class="px-5 py-4 sm:px-6">
+              <p class="font-medium text-gray-800 text-theme-sm dark:text-white/90" x-text="metric.name"></p>
+            </td>
+            <template x-for="(month, index) in metric.months" :key="index">
+              <td class="px-5 py-4 sm:px-6 text-center">
+                <span
+                  class="inline-block rounded-lg px-3 py-1.5 text-sm font-medium"
+                  :class="getStatusClass(month.status)"
+                >
+                  <span x-text="month.value"></span><span x-text="month.suffix || metric.suffix || ''"></span>
+                </span>
+              </td>
+            </template>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
+    <div class="text-sm text-gray-500 dark:text-gray-400">
+      Showing <span x-text="(currentPage - 1) * itemsPerPage + 1"></span>-
+      <span x-text="Math.min(currentPage * itemsPerPage, months.length)"></span>
+      of <span x-text="months.length"></span> months
+    </div>
+    <div class="flex items-center gap-2">
+      <button
+        @click="currentPage = Math.max(1, currentPage - 1)"
+        :disabled="currentPage === 1"
+        :class="currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-50 dark:hover:bg-gray-800'"
+        class="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-3 py-2 text-theme-sm font-medium text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
+      >
+        <svg
+          class="stroke-current"
+          width="16"
+          height="16"
+          viewBox="0 0 16 16"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M10 12L6 8L10 4"
+            stroke=""
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+        Previous
+      </button>
+      <button
+        @click="currentPage = Math.min(getTotalPages(), currentPage + 1)"
+        :disabled="currentPage === getTotalPages()"
+        :class="currentPage === getTotalPages() ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-50 dark:hover:bg-gray-800'"
+        class="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-3 py-2 text-theme-sm font-medium text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
+      >
+        Next
+        <svg
+          class="stroke-current"
+          width="16"
+          height="16"
+          viewBox="0 0 16 16"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M6 12L10 8L6 4"
+            stroke=""
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+

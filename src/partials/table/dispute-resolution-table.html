@@ -1,0 +1,747 @@
+<div
+  x-data="{
+    disputes: [
+      {
+        id: 'PCR-001',
+        employeeName: 'John Smith',
+        employeeId: 'EMP001',
+        category: 'Payroll',
+        description: 'Incorrect overtime calculation for pay period ending 2025-01-15',
+        submittedDate: '2025-01-20',
+        status: 'Pending',
+        statusColor: 'bg-amber-50 text-amber-700 dark:bg-amber-500/15 dark:text-amber-400',
+        assignedTo: 'Sarah Johnson',
+        priority: 'High',
+        priorityColor: 'bg-red-50 text-red-700 dark:bg-red-500/15 dark:text-red-400',
+        resolutionDate: '-',
+        resolutionNotes: '',
+      },
+      {
+        id: 'PCR-002',
+        employeeName: 'Emily Davis',
+        employeeId: 'EMP004',
+        category: 'Benefits',
+        description: 'Health insurance coverage issue - dependent not added',
+        submittedDate: '2025-01-18',
+        status: 'In Progress',
+        statusColor: 'bg-blue-50 text-blue-700 dark:bg-blue-500/15 dark:text-blue-400',
+        assignedTo: 'Michael Brown',
+        priority: 'Medium',
+        priorityColor: 'bg-amber-50 text-amber-700 dark:bg-amber-500/15 dark:text-amber-400',
+        resolutionDate: '-',
+        resolutionNotes: '',
+      },
+      {
+        id: 'PCR-003',
+        employeeName: 'David Wilson',
+        employeeId: 'EMP005',
+        category: 'Leave',
+        description: 'Vacation days not credited correctly',
+        submittedDate: '2025-01-15',
+        status: 'Resolved',
+        statusColor: 'bg-green-50 text-green-700 dark:bg-green-500/15 dark:text-green-400',
+        assignedTo: 'Sarah Johnson',
+        priority: 'Low',
+        priorityColor: 'bg-green-50 text-green-700 dark:bg-green-500/15 dark:text-green-400',
+        resolutionDate: '2025-01-22',
+        resolutionNotes: 'Credited 3 vacation days to employee account',
+      },
+      {
+        id: 'PCR-004',
+        employeeName: 'Michael Brown',
+        employeeId: 'EMP003',
+        category: 'Payroll',
+        description: 'Missing bonus payment for Q4 performance',
+        submittedDate: '2025-01-12',
+        status: 'Resolved',
+        statusColor: 'bg-green-50 text-green-700 dark:bg-green-500/15 dark:text-green-400',
+        assignedTo: 'Sarah Johnson',
+        priority: 'High',
+        priorityColor: 'bg-red-50 text-red-700 dark:bg-red-500/15 dark:text-red-400',
+        resolutionDate: '2025-01-19',
+        resolutionNotes: 'Bonus processed and paid in next payroll cycle',
+      },
+      {
+        id: 'PCR-005',
+        employeeName: 'Sarah Johnson',
+        employeeId: 'EMP002',
+        category: 'Work Conditions',
+        description: 'Request for flexible work schedule adjustment',
+        submittedDate: '2025-01-25',
+        status: 'Pending',
+        statusColor: 'bg-amber-50 text-amber-700 dark:bg-amber-500/15 dark:text-amber-400',
+        assignedTo: 'Michael Brown',
+        priority: 'Medium',
+        priorityColor: 'bg-amber-50 text-amber-700 dark:bg-amber-500/15 dark:text-amber-400',
+        resolutionDate: '-',
+        resolutionNotes: '',
+      },
+    ],
+    showAddModal: false,
+    showEditModal: false,
+    showDeleteModal: false,
+    editingDispute: null,
+    deletingDispute: null,
+    newDispute: {
+      id: '',
+      employeeName: '',
+      employeeId: '',
+      category: 'Payroll',
+      description: '',
+      submittedDate: '',
+      status: 'Pending',
+      assignedTo: '',
+      priority: 'Medium',
+      resolutionDate: '',
+      resolutionNotes: '',
+    },
+    categories: ['Payroll', 'Benefits', 'Leave', 'Work Conditions', 'Performance', 'Other'],
+    statusOptions: ['Pending', 'In Progress', 'Resolved', 'Closed'],
+    priorityOptions: ['Low', 'Medium', 'High'],
+    assignees: ['Sarah Johnson', 'Michael Brown', 'Emily Davis', 'David Wilson'],
+    getStatusColor(status) {
+      if (status === 'Resolved' || status === 'Closed') return 'bg-green-50 text-green-700 dark:bg-green-500/15 dark:text-green-400';
+      if (status === 'In Progress') return 'bg-blue-50 text-blue-700 dark:bg-blue-500/15 dark:text-blue-400';
+      return 'bg-amber-50 text-amber-700 dark:bg-amber-500/15 dark:text-amber-400';
+    },
+    getPriorityColor(priority) {
+      if (priority === 'High') return 'bg-red-50 text-red-700 dark:bg-red-500/15 dark:text-red-400';
+      if (priority === 'Medium') return 'bg-amber-50 text-amber-700 dark:bg-amber-500/15 dark:text-amber-400';
+      return 'bg-green-50 text-green-700 dark:bg-green-500/15 dark:text-green-400';
+    },
+    openAddModal() {
+      this.newDispute = {
+        id: 'PCR-' + String(this.disputes.length + 1).padStart(3, '0'),
+        employeeName: '',
+        employeeId: '',
+        category: 'Payroll',
+        description: '',
+        submittedDate: new Date().toISOString().split('T')[0],
+        status: 'Pending',
+        assignedTo: '',
+        priority: 'Medium',
+        resolutionDate: '',
+        resolutionNotes: '',
+      };
+      this.showAddModal = true;
+    },
+    openEditModal(dispute) {
+      this.editingDispute = { ...dispute };
+      this.showEditModal = true;
+    },
+    openDeleteModal(dispute) {
+      this.deletingDispute = dispute;
+      this.showDeleteModal = true;
+    },
+    addDispute() {
+      const statusColor = this.getStatusColor(this.newDispute.status);
+      const priorityColor = this.getPriorityColor(this.newDispute.priority);
+      this.disputes.push({
+        ...this.newDispute,
+        statusColor,
+        priorityColor,
+      });
+      this.showAddModal = false;
+    },
+    updateDispute() {
+      const index = this.disputes.findIndex(d => d.id === this.editingDispute.id);
+      if (index !== -1) {
+        const statusColor = this.getStatusColor(this.editingDispute.status);
+        const priorityColor = this.getPriorityColor(this.editingDispute.priority);
+        this.disputes[index] = {
+          ...this.editingDispute,
+          statusColor,
+          priorityColor,
+        };
+      }
+      this.showEditModal = false;
+      this.editingDispute = null;
+    },
+    deleteDispute() {
+      this.disputes = this.disputes.filter(d => d.id !== this.deletingDispute.id);
+      this.showDeleteModal = false;
+      this.deletingDispute = null;
+    },
+  }"
+  class="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6"
+>
+  <div
+    class="flex flex-col gap-2 mb-4 sm:flex-row sm:items-center sm:justify-between"
+  >
+    <div>
+      <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">
+        Payroll Concern Resolution
+      </h3>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <button
+        class="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200"
+      >
+        <svg
+          class="stroke-current fill-white dark:fill-gray-800"
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M2.29004 5.90393H17.7067"
+            stroke=""
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M17.7075 14.0961H2.29085"
+            stroke=""
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M12.0826 3.33331C13.5024 3.33331 14.6534 4.48431 14.6534 5.90414C14.6534 7.32398 13.5024 8.47498 12.0826 8.47498C10.6627 8.47498 9.51172 7.32398 9.51172 5.90415C9.51172 4.48432 10.6627 3.33331 12.0826 3.33331Z"
+            fill=""
+            stroke=""
+            stroke-width="1.5"
+          />
+          <path
+            d="M7.91745 11.525C6.49762 11.525 5.34662 12.676 5.34662 14.0959C5.34661 15.5157 6.49762 16.6667 7.91745 16.6667C9.33728 16.6667 10.4883 15.5157 10.4883 14.0959C10.4883 12.676 9.33728 11.525 7.91745 11.525Z"
+            fill=""
+            stroke=""
+            stroke-width="1.5"
+          />
+        </svg>
+        Filter
+      </button>
+
+      <button
+        @click="openAddModal()"
+        class="inline-flex items-center gap-2 rounded-lg bg-brand-500 px-4 py-2.5 text-theme-sm font-medium text-white shadow-theme-xs hover:bg-brand-600"
+      >
+        <svg
+          class="stroke-current fill-transparent"
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M10 4.16667V15.8333M4.16667 10H15.8333"
+            stroke=""
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+        Add Concern
+      </button>
+    </div>
+  </div>
+
+  <div class="w-full overflow-x-auto">
+    <table class="min-w-full">
+      <thead>
+        <tr class="border-y border-gray-100 dark:border-gray-800">
+          <th class="py-3 px-4">
+            <div class="flex items-center">
+              <p
+                class="font-medium text-gray-500 text-theme-xs dark:text-gray-400"
+              >
+                Concern ID
+              </p>
+            </div>
+          </th>
+          <th class="py-3 px-4">
+            <div class="flex items-center">
+              <p
+                class="font-medium text-gray-500 text-theme-xs dark:text-gray-400"
+              >
+                Employee
+              </p>
+            </div>
+          </th>
+          <th class="py-3 px-4">
+            <div class="flex items-center">
+              <p
+                class="font-medium text-gray-500 text-theme-xs dark:text-gray-400"
+              >
+                Category
+              </p>
+            </div>
+          </th>
+          <th class="py-3 px-4">
+            <div class="flex items-center">
+              <p
+                class="font-medium text-gray-500 text-theme-xs dark:text-gray-400"
+              >
+                Description
+              </p>
+            </div>
+          </th>
+          <th class="py-3 px-4">
+            <div class="flex items-center">
+              <p
+                class="font-medium text-gray-500 text-theme-xs dark:text-gray-400"
+              >
+                Submitted Date
+              </p>
+            </div>
+          </th>
+          <th class="py-3 px-4">
+            <div class="flex items-center">
+              <p
+                class="font-medium text-gray-500 text-theme-xs dark:text-gray-400"
+              >
+                Status
+              </p>
+            </div>
+          </th>
+          <th class="py-3 px-4">
+            <div class="flex items-center">
+              <p
+                class="font-medium text-gray-500 text-theme-xs dark:text-gray-400"
+              >
+                Priority
+              </p>
+            </div>
+          </th>
+          <th class="py-3 px-4">
+            <div class="flex items-center">
+              <p
+                class="font-medium text-gray-500 text-theme-xs dark:text-gray-400"
+              >
+                Assigned To
+              </p>
+            </div>
+          </th>
+          <th class="py-3 px-4">
+            <div class="flex items-center">
+              <p
+                class="font-medium text-gray-500 text-theme-xs dark:text-gray-400"
+              >
+                Resolution Date
+              </p>
+            </div>
+          </th>
+          <th class="py-3 px-4">
+            <div class="flex items-center">
+              <p
+                class="font-medium text-gray-500 text-theme-xs dark:text-gray-400"
+              >
+                Actions
+              </p>
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
+        <template x-for="dispute in disputes" :key="dispute.id">
+          <tr>
+            <td class="py-3 px-4">
+              <p
+                class="font-medium text-gray-800 text-theme-sm dark:text-white/90"
+                x-text="dispute.id"
+              ></p>
+            </td>
+            <td class="py-3 px-4">
+              <div>
+                <p class="font-medium text-gray-800 text-theme-sm dark:text-white/90" x-text="dispute.employeeName"></p>
+                <p class="text-gray-500 text-theme-xs dark:text-gray-400" x-text="dispute.employeeId"></p>
+              </div>
+            </td>
+            <td class="py-3 px-4">
+              <p class="text-gray-500 text-theme-sm dark:text-gray-400" x-text="dispute.category"></p>
+            </td>
+            <td class="py-3 px-4">
+              <p class="text-gray-800 text-theme-sm dark:text-white/90 max-w-xs truncate" x-text="dispute.description" :title="dispute.description"></p>
+            </td>
+            <td class="py-3 px-4">
+              <p class="text-gray-500 text-theme-sm dark:text-gray-400" x-text="dispute.submittedDate"></p>
+            </td>
+            <td class="py-3 px-4">
+              <span
+                class="inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium"
+                :class="dispute.statusColor"
+                x-text="dispute.status"
+              ></span>
+            </td>
+            <td class="py-3 px-4">
+              <span
+                class="inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium"
+                :class="dispute.priorityColor"
+                x-text="dispute.priority"
+              ></span>
+            </td>
+            <td class="py-3 px-4">
+              <p class="text-gray-500 text-theme-sm dark:text-gray-400" x-text="dispute.assignedTo"></p>
+            </td>
+            <td class="py-3 px-4">
+              <p class="text-gray-500 text-theme-sm dark:text-gray-400" x-text="dispute.resolutionDate"></p>
+            </td>
+            <td class="py-3 px-4">
+              <div class="flex items-center gap-2">
+                <button
+                  @click="openEditModal(dispute)"
+                  class="p-1.5 text-gray-500 hover:text-brand-500 dark:text-gray-400 dark:hover:text-brand-400"
+                  title="Edit"
+                >
+                  <svg
+                    class="stroke-current fill-transparent"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 18 18"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M10.5 3L13.5 6M2.25 15.75V12.75L9.7425 5.2575C9.94342 5.05658 10.1815 4.89746 10.4434 4.78906C10.7053 4.68066 10.9861 4.625 11.27 4.625C11.5539 4.625 11.8347 4.68066 12.0966 4.78906C12.3585 4.89746 12.5966 5.05658 12.7975 5.2575L14.2425 6.7025C14.4434 6.90342 14.6025 7.14152 14.7109 7.40341C14.8193 7.6653 14.875 7.94613 14.875 8.23C14.875 8.51387 14.8193 8.7947 14.7109 9.05659C14.6025 9.31848 14.4434 9.55658 14.2425 9.7575L6.75 17.25H3.75V14.25L10.5 3Z"
+                      stroke=""
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </button>
+                <button
+                  @click="openDeleteModal(dispute)"
+                  class="p-1.5 text-gray-500 hover:text-error-500 dark:text-gray-400 dark:hover:text-error-400"
+                  title="Delete"
+                >
+                  <svg
+                    class="stroke-current fill-transparent"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 18 18"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M3.75 5.25H14.25M7.125 8.25V12.75M10.875 8.25V12.75M3.375 5.25L3.75 15C3.75 15.5967 4.01071 16.169 4.40279 16.5611C4.79486 16.9532 5.36714 17.25 5.96381 17.25H12.0362C12.6329 17.25 13.2051 16.9532 13.5972 16.5611C13.9893 16.169 14.25 15.5967 14.25 15L14.625 5.25M7.125 5.25V3.75C7.125 3.35218 7.28296 2.97064 7.56738 2.68623C7.85179 2.40182 8.23333 2.25 8.625 2.25H9.375C9.76667 2.25 10.1482 2.40182 10.4326 2.68623C10.717 2.97064 10.875 3.35218 10.875 3.75V5.25"
+                      stroke=""
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Add Payroll Concern Modal -->
+  <div
+    x-show="showAddModal"
+    @click.outside="showAddModal = false"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+    style="display: none;"
+  >
+    <div
+      @click.stop
+      class="w-full max-w-3xl rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-white/[0.03] max-h-[90vh] overflow-y-auto"
+    >
+      <h3 class="mb-4 text-lg font-semibold text-gray-800 dark:text-white/90">Add New Payroll Concern</h3>
+      <div class="space-y-4">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Dispute ID</label>
+            <input
+              type="text"
+              x-model="newDispute.id"
+              class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+              readonly
+            />
+          </div>
+          <div>
+            <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Submitted Date</label>
+            <input
+              type="date"
+              x-model="newDispute.submittedDate"
+              class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+            />
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Employee Name</label>
+            <input
+              type="text"
+              x-model="newDispute.employeeName"
+              class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+              placeholder="Enter employee name"
+            />
+          </div>
+          <div>
+            <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Employee ID</label>
+            <input
+              type="text"
+              x-model="newDispute.employeeId"
+              class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+              placeholder="Enter employee ID"
+            />
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Category</label>
+            <select
+              x-model="newDispute.category"
+              class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+            >
+              <template x-for="cat in categories" :key="cat">
+                <option :value="cat" x-text="cat"></option>
+              </template>
+            </select>
+          </div>
+          <div>
+            <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Priority</label>
+            <select
+              x-model="newDispute.priority"
+              class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+            >
+              <template x-for="opt in priorityOptions" :key="opt">
+                <option :value="opt" x-text="opt"></option>
+              </template>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
+          <textarea
+            x-model="newDispute.description"
+            rows="3"
+            class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+              placeholder="Enter concern description"
+          ></textarea>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Status</label>
+            <select
+              x-model="newDispute.status"
+              class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+            >
+              <template x-for="opt in statusOptions" :key="opt">
+                <option :value="opt" x-text="opt"></option>
+              </template>
+            </select>
+          </div>
+          <div>
+            <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Assigned To</label>
+            <select
+              x-model="newDispute.assignedTo"
+              class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+            >
+              <option value="">Select assignee</option>
+              <template x-for="assignee in assignees" :key="assignee">
+                <option :value="assignee" x-text="assignee"></option>
+              </template>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="mt-6 flex justify-end gap-3">
+        <button
+          @click="showAddModal = false"
+          class="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
+        >
+          Cancel
+        </button>
+        <button
+          @click="addDispute()"
+          class="rounded-lg bg-brand-500 px-4 py-2 text-sm font-medium text-white hover:bg-brand-600"
+        >
+          Add Concern
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Payroll Concern Modal -->
+  <div
+    x-show="showEditModal"
+    @click.outside="showEditModal = false"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+    style="display: none;"
+  >
+    <div
+      @click.stop
+      class="w-full max-w-3xl rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-white/[0.03] max-h-[90vh] overflow-y-auto"
+    >
+      <h3 class="mb-4 text-lg font-semibold text-gray-800 dark:text-white/90">Edit Payroll Concern</h3>
+      <template x-if="editingDispute">
+        <div class="space-y-4">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Concern ID</label>
+              <input
+                type="text"
+                x-model="editingDispute.id"
+                class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+                readonly
+              />
+            </div>
+            <div>
+              <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Submitted Date</label>
+              <input
+                type="date"
+                x-model="editingDispute.submittedDate"
+                class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+              />
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Employee Name</label>
+              <input
+                type="text"
+                x-model="editingDispute.employeeName"
+                class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+              />
+            </div>
+            <div>
+              <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Employee ID</label>
+              <input
+                type="text"
+                x-model="editingDispute.employeeId"
+                class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+              />
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Category</label>
+              <select
+                x-model="editingDispute.category"
+                class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+              >
+                <template x-for="cat in categories" :key="cat">
+                  <option :value="cat" x-text="cat"></option>
+                </template>
+              </select>
+            </div>
+            <div>
+              <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Priority</label>
+              <select
+                x-model="editingDispute.priority"
+                class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+              >
+                <template x-for="opt in priorityOptions" :key="opt">
+                  <option :value="opt" x-text="opt"></option>
+                </template>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
+            <textarea
+              x-model="editingDispute.description"
+              rows="3"
+              class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+            ></textarea>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Status</label>
+              <select
+                x-model="editingDispute.status"
+                class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+              >
+                <template x-for="opt in statusOptions" :key="opt">
+                  <option :value="opt" x-text="opt"></option>
+                </template>
+              </select>
+            </div>
+            <div>
+              <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Assigned To</label>
+              <select
+                x-model="editingDispute.assignedTo"
+                class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+              >
+                <option value="">Select assignee</option>
+                <template x-for="assignee in assignees" :key="assignee">
+                  <option :value="assignee" x-text="assignee"></option>
+                </template>
+              </select>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Resolution Date</label>
+              <input
+                type="date"
+                x-model="editingDispute.resolutionDate"
+                class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+              />
+            </div>
+          </div>
+          <div>
+            <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Resolution Notes</label>
+            <textarea
+              x-model="editingDispute.resolutionNotes"
+              rows="3"
+              class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+              placeholder="Enter resolution notes"
+            ></textarea>
+          </div>
+        </div>
+      </template>
+      <div class="mt-6 flex justify-end gap-3">
+        <button
+          @click="showEditModal = false; editingDispute = null"
+          class="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
+        >
+          Cancel
+        </button>
+        <button
+          @click="updateDispute()"
+          x-show="editingDispute"
+          class="rounded-lg bg-brand-500 px-4 py-2 text-sm font-medium text-white hover:bg-brand-600"
+        >
+          Update Concern
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div
+    x-show="showDeleteModal"
+    @click.outside="showDeleteModal = false"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+    style="display: none;"
+  >
+    <div
+      @click.stop
+      class="w-full max-w-md rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-white/[0.03]"
+    >
+      <h3 class="mb-2 text-lg font-semibold text-gray-800 dark:text-white/90">Delete Payroll Concern</h3>
+      <p class="mb-6 text-sm text-gray-600 dark:text-gray-400">
+        <template x-if="deletingDispute">
+          <span>Are you sure you want to delete payroll concern <span x-text="deletingDispute.id" class="font-medium"></span>? This action cannot be undone.</span>
+        </template>
+      </p>
+      <div class="flex justify-end gap-3">
+        <button
+          @click="showDeleteModal = false; deletingDispute = null"
+          class="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
+        >
+          Cancel
+        </button>
+        <button
+          @click="deleteDispute()"
+          class="rounded-lg bg-red-500 px-4 py-2 text-sm font-medium text-white hover:bg-red-600"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
