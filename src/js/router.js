@@ -2,8 +2,8 @@
 class Router {
   constructor() {
     this.routes = {
-      '/': { page: 'ecommerce', file: 'index.html' },
-      '/index.html': { page: 'ecommerce', file: 'index.html' },
+      '/': { page: 'dashboard', file: 'index.html' },
+      '/index.html': { page: 'dashboard', file: 'index.html' },
       '/employees.html': { page: 'employees', file: 'employees.html' },
       '/onboarding.html': { page: 'onboarding', file: 'onboarding.html' },
       '/user-profile.html': { page: 'userProfile', file: 'user-profile.html' },
@@ -168,7 +168,7 @@ class Router {
     }
 
     // Re-initialize charts based on page
-    if (page === 'ecommerce') {
+    if (page === 'dashboard') {
       // Only initialize charts if they exist in the DOM
       const hasChart01 = document.querySelector('#chartOne');
       const hasChart02 = document.querySelector('#chartTwo');

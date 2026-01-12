@@ -32,7 +32,7 @@ const generateHTMLPlugins = () =>
     return new HtmlWebpackPlugin({
       filename,
       template: `./src/${filename}`,
-      favicon: `./src/images/favicon.ico`,
+      favicon: `./src/images/logo/cropped-dm-favicon.png`,
       inject: "body",
     });
   });
